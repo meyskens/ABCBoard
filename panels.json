@@ -1,0 +1,17 @@
+[{
+    "name": "test 1",
+    "shortcut": "Q",
+    "file": "./test.mp3"
+}, {
+    "name": "test 2",
+    "shortcut": "W",
+    "file": "./test.mp3"
+}, {
+    "name": "test 3",
+    "shortcut": "E",
+    "file": "./test.mp3"
+}, {
+    "name": "test 4",
+    "shortcut": "R",
+    "file": "./test.mp3"
+}]
