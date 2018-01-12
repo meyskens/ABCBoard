@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -12,7 +13,8 @@ import (
 	"github.com/zserge/webview"
 )
 
-var controller = PanelController{Panels: []Panel{}}
+var w webview.WebView
+var controller = PanelController{Panels: []Panel{}, playCancelers: map[string]context.CancelFunc{}}
 
 // Panel is one panel to be shown
 type Panel struct {
@@ -23,7 +25,8 @@ type Panel struct {
 
 // PanelController helps with controling the pannels
 type PanelController struct {
-	Panels []Panel `json:"panels"`
+	Panels        []Panel `json:"panels"`
+	playCancelers map[string]context.CancelFunc
 }
 
 // GetFromDisk loads the panels from the config file
@@ -41,7 +44,23 @@ func (p *PanelController) GetFromDisk() []Panel {
 // Play starts playing a specific file
 func (p *PanelController) Play(file string) {
 	fmt.Println(file)
-	go playMP3(file)
+	ctx, cancel := context.WithCancel(context.Background())
+	p.playCancelers[file] = cancel
+	go func() {
+		playMP3(ctx, file)
+		cancel()
+		p.playCancelers[file] = nil
+		w.Dispatch(func() {
+			w.Eval("window.eventEmitter.emit('endSound','" + file + "')")
+		})
+	}()
+}
+
+// Cancel stops playing a specific file
+func (p *PanelController) Cancel(file string) {
+	if cancel := p.playCancelers[file]; cancel != nil {
+		cancel()
+	}
 }
 
 func handleAPIPanels(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +81,7 @@ func main() {
 		http.Handle("/", http.FileServer(&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "/frontend/build"}))
 		log.Fatal(http.Serve(ln, nil))
 	}()
-	w := webview.New(webview.Settings{Debug: true, Title: "ABCBoard", Width: 800, Height: 600, Resizable: true, URL: "http://" + ln.Addr().String()})
+	w = webview.New(webview.Settings{Debug: true, Title: "ABCBoard", Width: 800, Height: 600, Resizable: true, URL: "http://" + ln.Addr().String()})
 	w.Dispatch(func() {
 		w.Bind("panelController", &controller)
 		w.Eval("window.panelController = panelController")

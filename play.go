@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -9,7 +10,7 @@ import (
 	"github.com/hajimehoshi/oto"
 )
 
-func playMP3(file string) {
+func playMP3(ctx context.Context, file string) {
 	f, err := os.Open(file)
 	if err != nil {
 		return
@@ -20,17 +21,29 @@ func playMP3(file string) {
 	if err != nil {
 		return
 	}
-	defer d.Close()
 
 	p, err := oto.NewPlayer(d.SampleRate(), 2, 2, 8192)
 	if err != nil {
 		return
 	}
-	defer p.Close()
 
 	fmt.Printf("Length: %d[bytes]\n", d.Length())
-
-	if _, err := io.Copy(p, d); err != nil {
-		return
+	doneCopy := make(chan bool)
+	go func() {
+		io.Copy(p, d)
+		doneCopy <- true
+	}()
+L:
+	for {
+		select {
+		case <-doneCopy:
+			p.Close()
+			d.Close()
+			break L
+		case <-ctx.Done():
+			p.Close()
+			d.Close()
+			break L
+		}
 	}
 }

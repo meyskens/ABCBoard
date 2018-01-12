@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Preloader } from 'react-materialize';
+import { EventEmitter } from 'fbemitter';
 import { getAllPanels } from '../apis/panels_api'
 import SoundPanel from './soundpanel'
 
@@ -14,6 +15,7 @@ class Panel extends Component {
     }
 
     panelControllerDidApear() {
+        window.eventEmitter = new EventEmitter(); // sorry you have to see this but we're fighting webkit here
         getAllPanels().then((response) => this.setState({ items: response.data }))
     }
 

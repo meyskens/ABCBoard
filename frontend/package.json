@@ -17,6 +17,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "fbemitter": "^2.1.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-hot-keys": "^1.0.5",
