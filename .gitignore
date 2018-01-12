@@ -1,4 +1,4 @@
-/bindata_assetfs.go
+/bindata.go
 node_modules/
 /frontend/build
 /abcboard
