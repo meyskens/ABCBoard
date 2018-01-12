@@ -29,7 +29,7 @@ class SoundPanel extends Component {
     }
 
     render() {
-        return <Card title={this.props.shortcut.toUpperCase()} actions={[<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]}>
+        return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={[<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]}>
             <p>{this.props.name}</p>
             <Hotkeys keyName={this.props.shortcut} onKeyUp={this.playStopSound}/>
         </Card>
