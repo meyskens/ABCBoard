@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"sync"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/zserge/webview"
@@ -18,14 +19,16 @@ var controller = PanelController{Panels: []Panel{}, playCancelers: map[string]co
 
 // Panel is one panel to be shown
 type Panel struct {
-	Name     string `json:"name"`
-	Shortcut string `json:"shortcut"`
-	File     string `json:"file"`
+	Name      string `json:"name"`
+	Shortcut  string `json:"shortcut"`
+	File      string `json:"file"`
+	playMutex sync.Mutex
 }
 
 // PanelController helps with controling the pannels
 type PanelController struct {
 	Panels        []Panel `json:"panels"`
+	panelsForFile map[string]*Panel
 	playCancelers map[string]context.CancelFunc
 }
 
@@ -38,11 +41,18 @@ func (p *PanelController) GetFromDisk() []Panel {
 		fmt.Println(err)
 		return p.Panels
 	}
+
+	p.panelsForFile = map[string]*Panel{}
+	for i := range p.Panels {
+		p.panelsForFile[p.Panels[i].File] = &p.Panels[i]
+	}
 	return p.Panels
 }
 
 // Play starts playing a specific file
 func (p *PanelController) Play(file string) {
+	panel := p.panelsForFile[file]
+	panel.playMutex.Lock()
 	fmt.Println(file)
 	ctx, cancel := context.WithCancel(context.Background())
 	p.playCancelers[file] = cancel
@@ -53,6 +63,7 @@ func (p *PanelController) Play(file string) {
 		w.Dispatch(func() {
 			w.Eval("window.eventEmitter.emit('endSound','" + file + "')")
 		})
+		panel.playMutex.Unlock()
 	}()
 }
 
