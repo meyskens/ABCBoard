@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"io"
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	mp3 "github.com/hajimehoshi/go-mp3"
 	"github.com/hajimehoshi/oto"
@@ -35,8 +35,21 @@ func playMP3(ctx context.Context, file string) {
 	}
 
 	doneCopy := make(chan bool)
+	sentSound := false
 	go func() {
-		io.Copy(p, d)
+		buf := make([]byte, 600)
+	R:
+		for {
+			select {
+			default:
+				n, err := d.Read(buf)
+				if err != nil {
+					break R
+				}
+				p.Write(buf[:n])
+				sentSound = true
+			}
+		}
 		doneCopy <- true
 	}()
 L:
@@ -51,9 +64,12 @@ L:
 			break L
 		case <-ctx.Done():
 			cgoMutex.Lock()
-			f.Close()
-			p.Close()
+			for !sentSound {
+				time.Sleep(time.Millisecond)
+			}
 			d.Close()
+			p.Close()
+			f.Close()
 			cgoMutex.Unlock()
 			break L
 		}
