@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"sync"
-	"time"
 
 	mp3 "github.com/hajimehoshi/go-mp3"
 	"github.com/hajimehoshi/oto"
@@ -35,20 +34,17 @@ func playMP3(ctx context.Context, file string) {
 	}
 
 	doneCopy := make(chan bool)
-	sentSound := false
+	writeMutex := sync.Mutex{}
 	go func() {
-		buf := make([]byte, 600)
-	R:
+		buf := make([]byte, 100)
 		for {
-			select {
-			default:
-				n, err := d.Read(buf)
-				if err != nil {
-					break R
-				}
-				p.Write(buf[:n])
-				sentSound = true
+			writeMutex.Lock()
+			n, err := d.Read(buf)
+			if err != nil {
+				break
 			}
+			p.Write(buf[:n])
+			writeMutex.Unlock()
 		}
 		doneCopy <- true
 	}()
@@ -63,14 +59,13 @@ L:
 			cgoMutex.Unlock()
 			break L
 		case <-ctx.Done():
+			writeMutex.Lock()
 			cgoMutex.Lock()
-			for !sentSound {
-				time.Sleep(time.Millisecond)
-			}
 			d.Close()
 			p.Close()
 			f.Close()
 			cgoMutex.Unlock()
+			writeMutex.Unlock()
 			break L
 		}
 	}
