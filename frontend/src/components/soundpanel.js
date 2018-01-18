@@ -12,7 +12,7 @@ class SoundPanel extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { playing: false, time: 0  }
+        this.state = { playing: false, time: 0, interval: null  }
 
         this.playStopSound = this.playStopSound.bind(this)
         window.eventEmitter.addListener("endSound", this.onEndSound.bind(this))
@@ -26,6 +26,7 @@ class SoundPanel extends Component {
     }
 
     resetTime() {
+        console.log(this.state)
         this.setState({ time: 0 })
         clearInterval(this.interval)
     }
@@ -33,8 +34,8 @@ class SoundPanel extends Component {
     onEndSound(file) {
         if (file == this.props.file) {
             this.setState({ playing: false })
+            this.resetTime()
         }
-        this.resetTime()
     } 
 
     playStopSound() {
