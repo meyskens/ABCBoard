@@ -12,17 +12,28 @@ class SoundPanel extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { playing: false, time: 0, interval: null  }
+        this.state = { playing: false, time: 0, interval: null, paused: false }
 
         this.playStopSound = this.playStopSound.bind(this)
         window.eventEmitter.addListener("endSound", this.onEndSound.bind(this))
 
         this.addTime = this.addTime.bind(this)
         this.resetTime = this.resetTime.bind(this)
+        this.startTime = this.startTime.bind(this)
+        this.pauseTime = this.pauseTime.bind(this)
+        this.pauseToggle = this.pauseToggle.bind(this)
     }
 
     addTime() {
         this.setState({ time: this.state.time + 1 })
+    }
+
+    startTime() {
+        this.interval = setInterval(this.addTime, 1000)
+    }
+
+    pauseTime() {
+        clearInterval(this.interval)
     }
 
     resetTime() {
@@ -46,8 +57,24 @@ class SoundPanel extends Component {
         } else {
             window.panelController.play(this.props.file)
             this.setState({ playing: true })
-            this.interval = setInterval(this.addTime, 1000)
+            this.startTime()
         }   
+    }
+
+    pauseToggle() {
+        if (!this.state.playing) {
+            return
+        }
+
+        if (this.state.paused) {
+            window.panelController.resume(this.props.file)
+            this.setState({ paused: false })
+            this.startTime()
+        } else {
+            window.panelController.pause(this.props.file)
+            this.setState({ paused: true })
+            this.pauseTime()
+        } 
     }
 
     render() {
@@ -55,10 +82,17 @@ class SoundPanel extends Component {
         if (this.state.playing) {
             timer = <p><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
         }
-        return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={[<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]}>
+
+        let buttons = [<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]
+        if (this.state.playing) {
+            buttons.push(<a href="#" onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</a>)
+        }
+
+        return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={buttons}>
             <p>{this.props.name}</p>
             {timer}
             <Hotkeys keyName={this.props.shortcut} onKeyUp={this.playStopSound}/>
+            <Hotkeys keyName={`shift+${this.props.shortcut}`} onKeyUp={this.pauseToggle}/>
         </Card>
     }
 }

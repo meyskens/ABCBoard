@@ -8,13 +8,14 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"sync"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/zserge/webview"
 )
 
 var w webview.WebView
-var controller = PanelController{Panels: []Panel{}, playCancelers: map[string]context.CancelFunc{}}
+var controller = PanelController{Panels: []Panel{}, playCancelers: map[string]context.CancelFunc{}, playPausers: map[string]*sync.Mutex{}}
 
 // Panel is one panel to be shown
 type Panel struct {
@@ -28,6 +29,7 @@ type PanelController struct {
 	Panels        []Panel `json:"panels"`
 	panelsForFile map[string]*Panel
 	playCancelers map[string]context.CancelFunc
+	playPausers   map[string]*sync.Mutex
 }
 
 // GetFromDisk loads the panels from the config file
@@ -52,8 +54,10 @@ func (p *PanelController) Play(file string) {
 	fmt.Println(file)
 	ctx, cancel := context.WithCancel(context.Background())
 	p.playCancelers[file] = cancel
+	pause := sync.Mutex{}
+	p.playPausers[file] = &pause
 	go func() {
-		playMP3(ctx, file)
+		playMP3(ctx, &pause, file)
 		cancel()
 		p.playCancelers[file] = nil
 		w.Dispatch(func() {
@@ -66,6 +70,20 @@ func (p *PanelController) Play(file string) {
 func (p *PanelController) Cancel(file string) {
 	if cancel := p.playCancelers[file]; cancel != nil {
 		cancel()
+	}
+}
+
+// Pause pauses playing a specific file
+func (p *PanelController) Pause(file string) {
+	if mutex := p.playPausers[file]; mutex != nil {
+		mutex.Lock()
+	}
+}
+
+// Resume pauses playing a specific file
+func (p *PanelController) Resume(file string) {
+	if mutex := p.playPausers[file]; mutex != nil {
+		mutex.Unlock()
 	}
 }
 

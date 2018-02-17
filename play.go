@@ -12,7 +12,7 @@ import (
 
 var cgoMutex = sync.Mutex{} // attempt to fix cgo breaking...
 
-func playMP3(ctx context.Context, file string) {
+func playMP3(ctx context.Context, pause *sync.Mutex, file string) {
 	f, err := os.Open(file)
 	if err != nil {
 		log.Println(err)
@@ -38,6 +38,7 @@ func playMP3(ctx context.Context, file string) {
 	go func() {
 		buf := make([]byte, 100)
 		for {
+			pause.Lock()
 			writeMutex.Lock()
 			n, err := d.Read(buf)
 			if err != nil {
@@ -45,6 +46,7 @@ func playMP3(ctx context.Context, file string) {
 			}
 			p.Write(buf[:n])
 			writeMutex.Unlock()
+			pause.Unlock()
 		}
 		doneCopy <- true
 	}()
