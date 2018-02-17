@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'LCD14';
+        src: url('/fonts/LCD14.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.led {
+    font-family: 'LCD14';
+    font-weight: normal;
+    font-size: 3em;
+}
+
+.empty-led {
+    padding-bottom: 4.4em;
+}

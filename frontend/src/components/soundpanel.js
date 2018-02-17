@@ -78,9 +78,9 @@ class SoundPanel extends Component {
     }
 
     render() {
-        let timer = <br/>
+        let timer = <div className="empty-led"/>
         if (this.state.playing) {
-            timer = <p><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
+            timer = <p className="led"><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
         }
 
         let buttons = [<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]
