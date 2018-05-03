@@ -18,7 +18,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "fbemitter": "^2.1.1",
-    "moment": "^2.20.1",
+    "moment": "^2.22.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-hot-keys": "^1.1.0",
