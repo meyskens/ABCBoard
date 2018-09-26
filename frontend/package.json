@@ -23,7 +23,7 @@
     "react-dom": "^15.6.2",
     "react-hot-keys": "^1.1.0",
     "react-materialize": "^2.2.0",
-    "react-moment": "^0.7.0",
+    "react-moment": "^0.8.0",
     "react-scripts": "^1.0.17",
     "webpack": "^4.12.0"
   },
