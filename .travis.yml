@@ -84,6 +84,7 @@ jobs:
     node_js: '10'
     os: windows
     install:
+      - eval "$(gimme 1.11)"
       - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
