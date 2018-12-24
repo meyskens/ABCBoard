@@ -25,6 +25,6 @@ jobs:
       script: 
         - cd frontend
         - npm i
-        - npm build
-        - npm test
+        - npm run-script build
+        - npm run-script test
     

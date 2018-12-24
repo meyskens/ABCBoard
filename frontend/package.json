@@ -19,18 +19,27 @@
     "babel-preset-react": "^6.24.1",
     "fbemitter": "^2.1.1",
     "moment": "^2.23.0",
+    "moment-timezone": "^0.5.23",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-hot-keys": "^1.2.2",
     "react-materialize": "^2.6.0",
     "react-moment": "^0.8.4",
-    "react-scripts": "^2.1.2",
-    "webpack": "^4.19.1"
+    "react-scripts": "^2.1.2"
   },
   "babel": {
     "presets": [
       "es2015",
       "react"
     ]
-  }
+  },
+  "devDependencies": {
+    "webpack": "4.19.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
