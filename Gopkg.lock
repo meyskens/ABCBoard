@@ -3,18 +3,23 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:044b2f1eea2f5cfb0d3678baf60892734f59d5c2ea3932cb6ed894a97ccba15c"
   name = "github.com/elazarl/go-bindata-assetfs"
   packages = ["."]
+  pruneopts = ""
   revision = "30f82fa23fd844bd5bb1e5f216db87fd77b5eb43"
 
 [[projects]]
   branch = "master"
+  digest = "1:f1648d325872983461c860bc6641d8aaf8880f66856a5e0d9b39247556737d0d"
   name = "github.com/gopherjs/gopherjs"
   packages = ["js"]
+  pruneopts = ""
   revision = "444abdf920945de5d4a977b572bcc6c674d1e4eb"
 
 [[projects]]
   branch = "master"
+  digest = "1:1df38540f27d26e61bd8f2fa01fe992087cea3665fdefb81e0eebb8738acd123"
   name = "github.com/hajimehoshi/go-mp3"
   packages = [
     ".",
@@ -25,28 +30,46 @@
     "internal/huffman",
     "internal/imdct",
     "internal/maindata",
-    "internal/sideinfo"
+    "internal/sideinfo",
   ]
+  pruneopts = ""
   revision = "e33c08454c22d2cc9ca6a1ef7d13357809275732"
 
 [[projects]]
   branch = "master"
+  digest = "1:81135221d8f680e2b4394e92b810e0447e1074e284867b1c9219886f8fa9d9d9"
   name = "github.com/hajimehoshi/oto"
   packages = [
     ".",
-    "internal/jni"
+    "internal/jni",
   ]
+  pruneopts = ""
   revision = "3680d211ad669453474fc5622a8cc4d346accedb"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/zserge/webview"
+  digest = "1:1c09d6a86f8a7c0a4c6528e10b6663dba846b05edd5366bd4e108a32592b0c7b"
+  name = "github.com/zserge/lorca"
   packages = ["."]
-  revision = "c0407d0ad02884a2e0a85df13eb446e94ec5459c"
+  pruneopts = ""
+  revision = "21c1fd663c1968c100e52b60412e2bd344896e1d"
+  version = "v0.1.6"
+
+[[projects]]
+  branch = "master"
+  digest = "1:4ab2fc83e3222b69759dfd717e01d0cf38b133aabfacc29a86057021a2f1abd9"
+  name = "golang.org/x/net"
+  packages = ["websocket"]
+  pruneopts = ""
+  revision = "927f97764cc334a6575f4b7a1584a147864d5723"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b5956d6b429f933d55f72c1b4d6a78c02c43a65bb1b670a505f7b558fbfb2314"
+  input-imports = [
+    "github.com/elazarl/go-bindata-assetfs",
+    "github.com/hajimehoshi/go-mp3",
+    "github.com/hajimehoshi/oto",
+    "github.com/zserge/lorca",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
