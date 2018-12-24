@@ -42,3 +42,16 @@ jobs:
         - cd ..
         - go-bindata ./frontend/build/...
         - ./release-linux.sh
+    - stage: release         
+      name: "Release macOS"
+      language: node_js
+      go: "1.11.x"
+      node_js: '10'
+      os: osx
+      script: 
+        - cd frontend
+        - npm i
+        - CI=false npm run-script build
+        - cd ..
+        - go-bindata ./frontend/build/...
+        - ./release-linux.sh
