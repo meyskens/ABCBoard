@@ -27,6 +27,6 @@ jobs:
       script: 
         - cd frontend
         - npm i
-        - npm run-script build
+        - CI=false npm run-script build
         # - npm run-script test
     
