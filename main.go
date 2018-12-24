@@ -86,12 +86,6 @@ func (p *PanelController) Resume(file string) {
 	}
 }
 
-func handleAPIPanels(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("content-type", "application/json")
-	out, _ := json.Marshal(controller.GetFromDisk())
-	w.Write(out)
-}
-
 func main() {
 	var err error
 	ui, err = lorca.New("", "", 480, 320)
@@ -107,7 +101,6 @@ func main() {
 	defer ln.Close()
 	go func() {
 		// load in bindata
-		http.Handle("/api/panels", http.HandlerFunc(handleAPIPanels))
 		http.Handle("/", http.FileServer(&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "/frontend/build"}))
 		log.Fatal(http.Serve(ln, nil))
 	}()
@@ -119,12 +112,14 @@ func main() {
 	ui.Bind("pause", controller.Pause)
 	ui.Bind("cancel", controller.Cancel)
 	ui.Bind("resume", controller.Resume)
+	ui.Bind("getAllPanels", controller.GetFromDisk)
 	ui.Eval(`
 			window.panelController = {
 				play,
 				pause,
 				cancel,
 				resume,
+				getAllPanels
 			}
 		`)
 	log.Println(err)
