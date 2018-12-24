@@ -34,6 +34,8 @@ jobs:
     language: node_js
     go: 1.11.x
     node_js: '10'
+    install:
+      - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
     - npm i
@@ -56,6 +58,8 @@ jobs:
     go: 1.11.x
     node_js: '10'
     os: osx
+    install:
+      - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
     - npm i
@@ -78,6 +82,8 @@ jobs:
     go: 1.11.x
     node_js: '10'
     os: windows
+    install:
+      - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
     - npm i
