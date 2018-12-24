@@ -55,7 +55,7 @@ jobs:
         tags: true
   - stage: release
     name: Release macOS
-    language: node_js
+    language: go
     go: 1.11.x
     node_js: '10'
     os: osx
