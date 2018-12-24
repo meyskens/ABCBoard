@@ -1,57 +1,97 @@
 stages:
-  - test
-  - release
+- test
+- release
 dist: xenial
-jobs:  
+jobs:
   include:
-    - stage: test         
-      name: "Go Tests"
-      language: go
-      go: 
-        - "1.10.x"
-        - "1.11.x"
-        - "1.12.x"
-        - "1.x.x"
-      install:
-        - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
-        - go get github.com/jteeuwen/go-bindata/...
-      script:
-        - mkdir -p ./frontend/build/
-        - touch ./frontend/build/dummy
-        - go-bindata ./frontend/build/...
-        - go build ./
-        - go test ./...
-    - stage: test         
-      name: "JS Tests"
-      language: node_js
-      node_js: '10'
-      script: 
-        - cd frontend
-        - npm i
-        - CI=false npm run-script build
-        # - npm run-script test
-    - stage: release         
-      name: "Release Linux"
-      language: node_js
-      go: "1.11.x"
-      node_js: '10'
-      script: 
-        - cd frontend
-        - npm i
-        - CI=false npm run-script build
-        - cd ..
-        - go-bindata ./frontend/build/...
-        - ./release-linux.sh
-    - stage: release         
-      name: "Release macOS"
-      language: node_js
-      go: "1.11.x"
-      node_js: '10'
-      os: osx
-      script: 
-        - cd frontend
-        - npm i
-        - CI=false npm run-script build
-        - cd ..
-        - go-bindata ./frontend/build/...
-        - ./release-linux.sh
+  - stage: test
+    name: Go Tests
+    language: go
+    go:
+    - 1.10.x
+    - 1.11.x
+    - 1.12.x
+    - 1.x.x
+    install:
+    - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
+    - go get github.com/jteeuwen/go-bindata/...
+    script:
+    - mkdir -p ./frontend/build/
+    - touch ./frontend/build/dummy
+    - go-bindata ./frontend/build/...
+    - go build ./
+    - go test ./...
+  - stage: test
+    name: JS Tests
+    language: node_js
+    node_js: '10'
+    script:
+    - cd frontend
+    - npm i
+    - CI=false npm run-script build
+  - stage: release
+    name: Release Linux
+    language: node_js
+    go: 1.11.x
+    node_js: '10'
+    script:
+    - cd frontend
+    - npm i
+    - CI=false npm run-script build
+    - cd ..
+    - go-bindata ./frontend/build/...
+    - "./release-linux.sh"
+    deploy:
+      provider: releases
+      skip_cleanup: true
+       api_key:
+        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+      files: ABCBoard_*
+      on:
+        repo: meyskens/ABCBoard
+        tags: true
+  - stage: release
+    name: Release macOS
+    language: node_js
+    go: 1.11.x
+    node_js: '10'
+    os: osx
+    script:
+    - cd frontend
+    - npm i
+    - CI=false npm run-script build
+    - cd ..
+    - go-bindata ./frontend/build/...
+    - "./release-mac.sh"
+    deploy:
+      provider: releases
+      skip_cleanup: true
+       api_key:
+        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+      files: ABCBoard.app
+      on:
+        repo: meyskens/ABCBoard
+        tags: trueA
+  - stage: release
+    name: Release Windows
+    language: node_js
+    go: 1.11.x
+    node_js: '10'
+    os: windows
+    script:
+    - cd frontend
+    - npm i
+    - CI=false npm run-script build
+    - cd ..
+    - go-bindata ./frontend/build/...
+    - go generate
+    - go build -ldflags "-H windowsgui" -o abcboard.exe
+    deploy:
+      provider: releases
+      skip_cleanup: true
+       api_key:
+        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+      file: abcboard.exe
+      on:
+        repo: meyskens/ABCBoard
+        tags: true
