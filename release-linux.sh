@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -z $TRAVIS_TAG ]; then
+    TRAVIS_TAG="0.0.0"
+fi
+
 APP=ABCBoard
 APPDIR=${APP}_$TRAVIS_TAG
 
@@ -9,7 +13,7 @@ mkdir -p $APPDIR/usr/share/icons/hicolor/1024x1024/apps
 mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps
 mkdir -p $APPDIR/DEBIAN
 
-go build -o $APPDIR/usr/bin/$APP
+go build -o $APPDIR/usr/bin/$APP ./
 
 cp icons/icon.png $APPDIR/usr/share/icons/hicolor/1024x1024/apps/${APP}.png
 cp icons/icon.png $APPDIR/usr/share/icons/hicolor/256x256/apps/${APP}.png
