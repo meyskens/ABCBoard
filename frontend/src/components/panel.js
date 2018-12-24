@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Row, Col, Preloader } from 'react-materialize';
-import SoundPanel from './soundpanel'
+import React, { Component } from "react"
+import { Row, Col, Preloader } from "react-materialize"
+import SoundPanel from "./soundpanel"
 
 class Panel extends Component {
     constructor(props) {
@@ -18,8 +18,8 @@ class Panel extends Component {
 
     checkPanelController() {
         if (window.panelController) {
-            clearInterval(this.waitForPanelControllerIntetral);        
-            this.panelControllerDidApear();
+            clearInterval(this.waitForPanelControllerIntetral)        
+            this.panelControllerDidApear()
         }
     }
 

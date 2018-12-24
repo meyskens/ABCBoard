@@ -1,8 +1,8 @@
-﻿import React from 'react';
-import ReactDOM from 'react-dom';
+﻿import React from "react"
+import ReactDOM from "react-dom"
 
-import Header from './components/header'
-import Panel from './components/panel'
+import Header from "./components/header"
+import Panel from "./components/panel"
 
 const App = function () {
     return (
@@ -10,10 +10,10 @@ const App = function () {
             <Header/>
             <Panel/>
         </div>
-    );
-};
+    )
+}
 
 ReactDOM.render(
     <App />,
     document.querySelector("#container")
-);
+)

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Card } from 'react-materialize';
-import Hotkeys from 'react-hot-keys';
-import Moment from 'react-moment';
-import moment from 'moment-timezone';
+import React, { Component } from "react"
+import { Card } from "react-materialize"
+import Hotkeys from "react-hot-keys"
+import Moment from "react-moment"
+import moment from "moment-timezone"
 
-Moment.globalMoment = moment;
+Moment.globalMoment = moment
 
 class SoundPanel extends Component {
-    interval = null
 
     constructor(props) {
-        super(props);
+        super(props)
+        this.interval = null
 
         this.state = { playing: false, time: 0, interval: null, paused: false }
 
@@ -36,7 +36,6 @@ class SoundPanel extends Component {
     }
 
     resetTime() {
-        console.log(this.state)
         this.setState({ time: 0 })
         clearInterval(this.interval)
     }
