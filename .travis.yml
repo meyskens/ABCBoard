@@ -88,8 +88,8 @@ jobs:
       - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
-    - npm i
-    - CI=false npm run-script build
+    - C:/Program\ Files/nodejs/npm i
+    - C:/Program\ Files/nodejs/npm run-script build
     - cd ..
     - go-bindata ./frontend/build/...
     - go generate
