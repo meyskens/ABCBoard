@@ -1,0 +1,25 @@
+stages:
+  - test
+jobs:  
+  include:
+    - stage: test         
+      name: "Go Tests"
+      language: go
+      go: 
+        - "1.10.x"
+        - "1.11.x"
+        - "1.12.x"
+        - "1.x.x"
+      script: 
+        - go build ./
+        - go test ./...
+    - stage: test         
+      name: "JS Tests"
+      language: node_js
+      node_js: '10'
+      script: 
+        - cd frontend
+        - npm i
+        - npm build
+        - npm test
+    
