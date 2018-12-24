@@ -1,5 +1,6 @@
 stages:
   - test
+dist: xenial
 jobs:  
   include:
     - stage: test         
@@ -11,7 +12,7 @@ jobs:
         - "1.12.x"
         - "1.x.x"
       install:
-        - sudo apt-get install -y libasound2-dev
+        - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
       script: 
         - go build ./
         - go test ./...
