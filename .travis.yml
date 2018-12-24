@@ -13,7 +13,9 @@ jobs:
         - "1.x.x"
       install:
         - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
+        - go get github.com/jteeuwen/go-bindata/...
       script: 
+        - go-bindata ./frontend/build/...
         - go build ./
         - go test ./...
     - stage: test         
