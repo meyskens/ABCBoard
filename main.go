@@ -10,11 +10,12 @@ import (
 	"os"
 	"sync"
 
+	"github.com/zserge/lorca"
+
 	assetfs "github.com/elazarl/go-bindata-assetfs"
-	"github.com/zserge/webview"
 )
 
-var w webview.WebView
+var ui lorca.UI
 var controller = PanelController{Panels: []Panel{}, playCancelers: map[string]context.CancelFunc{}, playPausers: map[string]*sync.Mutex{}}
 
 // Panel is one panel to be shown
@@ -60,9 +61,7 @@ func (p *PanelController) Play(file string) {
 		playMP3(ctx, &pause, file)
 		cancel()
 		p.playCancelers[file] = nil
-		w.Dispatch(func() {
-			w.Eval("window.eventEmitter.emit('endSound','" + file + "')")
-		})
+		ui.Eval("window.eventEmitter.emit('endSound','" + file + "')")
 	}()
 }
 
@@ -94,6 +93,13 @@ func handleAPIPanels(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	var err error
+	ui, err = lorca.New("", "", 480, 320)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer ui.Close()
+
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		log.Fatal(err)
@@ -105,10 +111,24 @@ func main() {
 		http.Handle("/", http.FileServer(&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: "/frontend/build"}))
 		log.Fatal(http.Serve(ln, nil))
 	}()
-	w = webview.New(webview.Settings{Debug: true, Title: "ABCBoard", Width: 800, Height: 600, Resizable: true, URL: "http://" + ln.Addr().String()})
-	w.Dispatch(func() {
-		w.Bind("panelController", &controller)
-		w.Eval("window.panelController = panelController")
-	})
-	w.Run()
+	ui.Load(fmt.Sprintf("http://%s", ln.Addr()))
+
+	log.Println("DOM bind")
+
+	ui.Bind("play", controller.Play)
+	ui.Bind("pause", controller.Pause)
+	ui.Bind("cancel", controller.Cancel)
+	ui.Bind("resume", controller.Resume)
+	ui.Eval(`
+			window.panelController = {
+				play,
+				pause,
+				cancel,
+				resume,
+			}
+		`)
+	log.Println(err)
+
+	// Wait for the browser window to be closed
+	<-ui.Done()
 }

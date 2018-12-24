@@ -83,9 +83,9 @@ class SoundPanel extends Component {
             timer = <p className="led"><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
         }
 
-        let buttons = [<button type="button" className="link-button"  onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</button>]
+        let buttons = [<a type="button" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]
         if (this.state.playing) {
-            buttons.push(<button type="button" className="link-button"  onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</button>)
+            buttons.push(<a type="button" onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</a>)
         }
 
         return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={buttons}>
