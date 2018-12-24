@@ -43,7 +43,7 @@ class SoundPanel extends Component {
     }
 
     onEndSound(file) {
-        if (file == this.props.file) {
+        if (file === this.props.file) {
             this.setState({ playing: false })
             this.resetTime()
         }
@@ -83,9 +83,9 @@ class SoundPanel extends Component {
             timer = <p className="led"><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
         }
 
-        let buttons = [<a href="#" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]
+        let buttons = [<button type="button" className="link-button"  onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</button>]
         if (this.state.playing) {
-            buttons.push(<a href="#" onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</a>)
+            buttons.push(<button type="button" className="link-button"  onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</button>)
         }
 
         return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={buttons}>
