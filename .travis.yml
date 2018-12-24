@@ -37,6 +37,7 @@ jobs:
     install:
       - go get github.com/jteeuwen/go-bindata/...
     script:
+    - go version
     - cd frontend
     - npm i
     - CI=false npm run-script build
