@@ -79,12 +79,12 @@ jobs:
         tags: trueA
   - stage: release
     name: Release Windows
-    language: node_js
+    language: go
     go: 1.11.x
     node_js: '10'
     os: windows
     install:
-      - eval "$(gimme 1.11)"
+      - choco install nodejs 
       - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
