@@ -41,7 +41,7 @@ class SoundPanel extends Component {
         clearInterval(this.interval)
     }
 
-    onEndSound(file) {
+    onEndSound() {
         this.setState({ playing: false })
         this.resetTime()
     } 
