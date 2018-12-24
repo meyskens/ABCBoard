@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Row, Col, Preloader } from 'react-materialize';
-import { EventEmitter } from 'fbemitter';
 import SoundPanel from './soundpanel'
 
 class Panel extends Component {
@@ -14,7 +13,6 @@ class Panel extends Component {
     }
 
     panelControllerDidApear() {
-        window.eventEmitter = new EventEmitter(); // sorry you have to see this but we're fighting webkit here
         window.panelController.getAllPanels().then((items) => this.setState({ items }))
     }
 
@@ -30,7 +28,6 @@ class Panel extends Component {
             return <Row><Col s={4} offset='s6'><Preloader size='big' flashing={true} /></Col></Row>
         }
 
-        console.log(this.state.items)
         return <Row>{this.state.items.map((item) => <Col s={2}><SoundPanel {...item}/></Col>)}</Row>
     }
 

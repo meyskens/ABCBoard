@@ -57,12 +57,10 @@ func (p *PanelController) Play(file string) {
 	p.playCancelers[file] = cancel
 	pause := sync.Mutex{}
 	p.playPausers[file] = &pause
-	go func() {
-		playMP3(ctx, &pause, file)
-		cancel()
-		p.playCancelers[file] = nil
-		ui.Eval("window.eventEmitter.emit('endSound','" + file + "')")
-	}()
+	playMP3(ctx, &pause, file)
+	cancel()
+	p.playCancelers[file] = nil
+	//ui.Eval("window.eventEmitter.emit('endSound','" + file + "')")
 }
 
 // Cancel stops playing a specific file
