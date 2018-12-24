@@ -1,5 +1,6 @@
 stages:
   - test
+  - release
 dist: xenial
 jobs:  
   include:
@@ -29,4 +30,15 @@ jobs:
         - npm i
         - CI=false npm run-script build
         # - npm run-script test
-    
+    - stage: release         
+      name: "Release Linux"
+      language: node_js
+      go: "1.11.x"
+      node_js: '10'
+      script: 
+        - cd frontend
+        - npm i
+        - CI=false npm run-script build
+        - cd ..
+        - go-bindata ./frontend/build/...
+        - ./release-linux.sh
