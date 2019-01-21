@@ -35,7 +35,7 @@ jobs:
     go: 1.11.x
     node_js: '10'
     install:
-      - go get github.com/jteeuwen/go-bindata/...
+    - go get github.com/jteeuwen/go-bindata/...
     script:
     - go version
     - cd frontend
@@ -48,7 +48,7 @@ jobs:
       provider: releases
       skip_cleanup: true
       api_key:
-        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+        secure: dFyeV770U1xWJLDRpkxagRe4Gp2hLNHMxt9SkdGa3VlvsScaRBlZmWXSoBbE0OxUuOhUHtNtK7KiJaU+XptM+Bml3CajHO07O8MpJSkq+xk9bzRe50ixFGVa//TOmE2ZvC8gtTOt6jzmSsbKWKGt15WqYs3ynWTniPz2S11ADUKKPUv+uMq6F8w0sS0uUf6TVkoxJOClKoBglgJdcFsdLIYtay6IZzV73bB5/hpJeRwj/Z+fbVmFnNmRxTyWyxB/gASFgWRVb9+rRhG2M+EAV7cB/wrRio6pXK1hFeYb2Mt2MMcNamkhAIw/PqokWOeKMrT6D0qP8AtathHBbCf7IhVvpSiNzoqTy6vQRW1F2/2RLqqm/zgy3eHL2x1XE0A54PRphZBAn3HwJHpdZ5LSYMTZkoLTkPYBevuReWUML6W0N9GTE7s1BzcBu21zktqqZaRWp4uJTKofPWvtf2lvUHXjJUWP1w3FZ6ImRnpX/SqfsN4KXGJomL22P6676261i5h+NCN8aB+yxIvwcQjXfA5ZA1gjwy+mflXA1Bi3alSaQ7HK+3PuqUo6/53ApQJJ+dCsc3qMvADSNeSO/Vli0daCSmG0Day5445algbOf36Kqev1iW7hB4tPXYjEmAcpT1hi5Rk2MCosZ69bNBml+irJ55u/jt4Df0I6P1wUfdU=
       files: ABCBoard_*
       on:
         repo: meyskens/ABCBoard
@@ -60,19 +60,19 @@ jobs:
     node_js: '10'
     os: osx
     install:
-      - go get github.com/jteeuwen/go-bindata/...
+    - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
     - npm i
     - CI=false npm run-script build
     - cd ..
-    - $GOPATH/bin/go-bindata ./frontend/build/...
+    - "$GOPATH/bin/go-bindata ./frontend/build/..."
     - "./release-mac.sh"
     deploy:
       provider: releases
       skip_cleanup: true
       api_key:
-        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+        secure: dFyeV770U1xWJLDRpkxagRe4Gp2hLNHMxt9SkdGa3VlvsScaRBlZmWXSoBbE0OxUuOhUHtNtK7KiJaU+XptM+Bml3CajHO07O8MpJSkq+xk9bzRe50ixFGVa//TOmE2ZvC8gtTOt6jzmSsbKWKGt15WqYs3ynWTniPz2S11ADUKKPUv+uMq6F8w0sS0uUf6TVkoxJOClKoBglgJdcFsdLIYtay6IZzV73bB5/hpJeRwj/Z+fbVmFnNmRxTyWyxB/gASFgWRVb9+rRhG2M+EAV7cB/wrRio6pXK1hFeYb2Mt2MMcNamkhAIw/PqokWOeKMrT6D0qP8AtathHBbCf7IhVvpSiNzoqTy6vQRW1F2/2RLqqm/zgy3eHL2x1XE0A54PRphZBAn3HwJHpdZ5LSYMTZkoLTkPYBevuReWUML6W0N9GTE7s1BzcBu21zktqqZaRWp4uJTKofPWvtf2lvUHXjJUWP1w3FZ6ImRnpX/SqfsN4KXGJomL22P6676261i5h+NCN8aB+yxIvwcQjXfA5ZA1gjwy+mflXA1Bi3alSaQ7HK+3PuqUo6/53ApQJJ+dCsc3qMvADSNeSO/Vli0daCSmG0Day5445algbOf36Kqev1iW7hB4tPXYjEmAcpT1hi5Rk2MCosZ69bNBml+irJ55u/jt4Df0I6P1wUfdU=
       files: ABCBoard.app
       on:
         repo: meyskens/ABCBoard
@@ -84,8 +84,8 @@ jobs:
     node_js: '10'
     os: windows
     install:
-      - choco install nodejs 
-      - go get github.com/jteeuwen/go-bindata/...
+    - choco install nodejs
+    - go get github.com/jteeuwen/go-bindata/...
     script:
     - cd frontend
     - C:/Program\ Files/nodejs/npm i
@@ -98,8 +98,7 @@ jobs:
       provider: releases
       skip_cleanup: true
       api_key:
-        secure: 1wLbPV/Rd12jGizaseD53lfjf29XaQkkLUBel+43yA6QUX+ed38Lf34OZN0T79b8De5H2IDwZqJqcJls5ms//iImiekm68dvfyVe6AvlrhiSEdu+mEWKMI4BNqCu+/VRIYlJea6PD+uEEe3AwRGZMxKjC5FdH/0a8s4l4ATY4S0Ve9SMoOlRk+CT9ojr/Up0y2HKWljaPCjBHhruD73KczikC45lS55YiCY4L8KPoEWX3srbILoBTP6h7wp3oU+a+WkE98lRK6M00/D+n8yUiahtuOF0WnfyD1KkpW3MCAvBhFoNvpPqCFRzVsPuNDTfvk0x22QsMd+kNCJU6yoQO50lHdyjU4h7UaOgUUa7NCxWN7QeB3xyV849xZv/Z79/uYn1u9h/Ft9AuWYJi6XtMkhp6Y9xNy7v8w/MIpSjNVH9lpv5+xQ2u+L/7z5nWm3ZDlsziypLgJh1pBnAHaBqiwMUCpR2k/Vtt1o2c8tieD+sHCFdF/zTZQ4AGon6MGnRfiQRyk+MVDyzVwjRkkix5dhK4ZQo355Lpk8CC2bGlRN5fFCRjm/N0HYxexBFFDv1c52Av2D1hij+3ZZf083y4F7ssQh39gWukGF5s7Cm5s7Ic4xtaSRUx35TnevadUa5zhPuigq0LHTgh+d72FPr7gXExQn/bKFDun6DOujgBVY=
+        secure: dFyeV770U1xWJLDRpkxagRe4Gp2hLNHMxt9SkdGa3VlvsScaRBlZmWXSoBbE0OxUuOhUHtNtK7KiJaU+XptM+Bml3CajHO07O8MpJSkq+xk9bzRe50ixFGVa//TOmE2ZvC8gtTOt6jzmSsbKWKGt15WqYs3ynWTniPz2S11ADUKKPUv+uMq6F8w0sS0uUf6TVkoxJOClKoBglgJdcFsdLIYtay6IZzV73bB5/hpJeRwj/Z+fbVmFnNmRxTyWyxB/gASFgWRVb9+rRhG2M+EAV7cB/wrRio6pXK1hFeYb2Mt2MMcNamkhAIw/PqokWOeKMrT6D0qP8AtathHBbCf7IhVvpSiNzoqTy6vQRW1F2/2RLqqm/zgy3eHL2x1XE0A54PRphZBAn3HwJHpdZ5LSYMTZkoLTkPYBevuReWUML6W0N9GTE7s1BzcBu21zktqqZaRWp4uJTKofPWvtf2lvUHXjJUWP1w3FZ6ImRnpX/SqfsN4KXGJomL22P6676261i5h+NCN8aB+yxIvwcQjXfA5ZA1gjwy+mflXA1Bi3alSaQ7HK+3PuqUo6/53ApQJJ+dCsc3qMvADSNeSO/Vli0daCSmG0Day5445algbOf36Kqev1iW7hB4tPXYjEmAcpT1hi5Rk2MCosZ69bNBml+irJ55u/jt4Df0I6P1wUfdU=
       file: abcboard.exe
       on:
         repo: meyskens/ABCBoard
-        tags: true
