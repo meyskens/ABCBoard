@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import { Row, Col, Preloader } from 'react-materialize';
-import { EventEmitter } from 'fbemitter';
-import { getAllPanels } from '../apis/panels_api'
-import SoundPanel from './soundpanel'
+import React, { Component } from "react"
+import { Row, Col, Preloader } from "react-materialize"
+import SoundPanel from "./soundpanel"
 
 class Panel extends Component {
     constructor(props) {
@@ -15,14 +13,13 @@ class Panel extends Component {
     }
 
     panelControllerDidApear() {
-        window.eventEmitter = new EventEmitter(); // sorry you have to see this but we're fighting webkit here
-        getAllPanels().then((response) => this.setState({ items: response.data }))
+        window.panelController.getAllPanels().then((items) => this.setState({ items }))
     }
 
     checkPanelController() {
         if (window.panelController) {
-            clearInterval(this.waitForPanelControllerIntetral);        
-            this.panelControllerDidApear();
+            clearInterval(this.waitForPanelControllerIntetral)        
+            this.panelControllerDidApear()
         }
     }
 
@@ -31,7 +28,6 @@ class Panel extends Component {
             return <Row><Col s={4} offset='s6'><Preloader size='big' flashing={true} /></Col></Row>
         }
 
-        console.log(this.state.items)
         return <Row>{this.state.items.map((item) => <Col s={2}><SoundPanel {...item}/></Col>)}</Row>
     }
 

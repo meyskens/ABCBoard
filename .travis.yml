@@ -1,30 +1,30 @@
 stages:
-  - test
+- test
 dist: xenial
-jobs:  
+jobs:
   include:
-    - stage: test         
-      name: "Go Tests"
-      language: go
-      go: 
-        - "1.10.x"
-        - "1.11.x"
-        - "1.12.x"
-        - "1.x.x"
-      install:
-        - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
-        - go get github.com/jteeuwen/go-bindata/...
-      script: 
-        - go-bindata ./frontend/build/...
-        - go build ./
-        - go test ./...
-    - stage: test         
-      name: "JS Tests"
-      language: node_js
-      node_js: '10'
-      script: 
-        - cd frontend
-        - npm i
-        - npm run-script build
-        # - npm run-script test
-    
+  - stage: test
+    name: Go Tests
+    language: go
+    go:
+    - 1.10.x
+    - 1.11.x
+    - 1.12.x
+    - 1.x.x
+    install:
+    - sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0-dev
+    - go get github.com/jteeuwen/go-bindata/...
+    script:
+    - mkdir -p ./frontend/build/
+    - touch ./frontend/build/dummy
+    - go-bindata ./frontend/build/...
+    - go build ./
+    - go test ./...
+  - stage: test
+    name: JS Tests
+    language: node_js
+    node_js: '10'
+    script:
+    - cd frontend
+    - npm i
+    - CI=false npm run-script build

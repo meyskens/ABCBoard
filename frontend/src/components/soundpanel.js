@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
-import { Card } from 'react-materialize';
-import Hotkeys from 'react-hot-keys';
-import Moment from 'react-moment';
-import moment from 'moment-timezone';
+import React, { Component } from "react"
+import { Card } from "react-materialize"
+import Hotkeys from "react-hot-keys"
+import Moment from "react-moment"
+import moment from "moment-timezone"
 
-Moment.globalMoment = moment;
+Moment.globalMoment = moment
 
 class SoundPanel extends Component {
-    interval = null
 
     constructor(props) {
-        super(props);
+        super(props)
+        this.interval = null
 
         this.state = { playing: false, time: 0, interval: null, paused: false }
 
         this.playStopSound = this.playStopSound.bind(this)
-        window.eventEmitter.addListener("endSound", this.onEndSound.bind(this))
 
         this.addTime = this.addTime.bind(this)
         this.resetTime = this.resetTime.bind(this)
@@ -37,16 +36,13 @@ class SoundPanel extends Component {
     }
 
     resetTime() {
-        console.log(this.state)
         this.setState({ time: 0 })
         clearInterval(this.interval)
     }
 
-    onEndSound(file) {
-        if (file === this.props.file) {
-            this.setState({ playing: false })
-            this.resetTime()
-        }
+    onEndSound() {
+        this.setState({ playing: false })
+        this.resetTime()
     } 
 
     playStopSound() {
@@ -55,7 +51,7 @@ class SoundPanel extends Component {
             this.setState({ playing: false })
             this.resetTime()
         } else {
-            window.panelController.play(this.props.file)
+            window.panelController.play(this.props.file).then(this.onEndSound.bind(this))
             this.setState({ playing: true })
             this.startTime()
         }   
@@ -83,9 +79,9 @@ class SoundPanel extends Component {
             timer = <p className="led"><Moment tz="UTC" format="HH:mm:ss"unix>{this.state.time}</Moment></p>
         }
 
-        let buttons = [<button type="button" className="link-button"  onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</button>]
+        let buttons = [<a type="button" onClick={this.playStopSound}>{this.state.playing ? "Stop" : "Play"}</a>]
         if (this.state.playing) {
-            buttons.push(<button type="button" className="link-button"  onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</button>)
+            buttons.push(<a type="button" onClick={this.pauseToggle}>{this.state.paused ? "Resume" : "Pause"}</a>)
         }
 
         return <Card className={this.state.playing ? "deep-orange" : ""}title={this.props.shortcut.toUpperCase()} actions={buttons}>

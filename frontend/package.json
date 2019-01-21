@@ -1,6 +1,6 @@
 {
-  "name": "les2",
-  "version": "1.0.0",
+  "name": "abcboard",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,12 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "fbemitter": "^2.1.1",
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.23",
     "react": "^16.7.0",
@@ -34,6 +32,8 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "webpack": "4.19.1"
   },
   "browserslist": [
