@@ -28,7 +28,21 @@ class Panel extends Component {
             return <Row><Col s={4} offset='s6'><Preloader size='big' flashing={true} /></Col></Row>
         }
 
-        return <Row>{this.state.items.map((item) => <Col s={2}><SoundPanel {...item}/></Col>)}</Row>
+        let rows = []
+        let c = 0
+        let rc = 0
+        for (let item of this.state.items) {
+            if (!rows[rc]) {
+                rows[rc] = []
+            }
+            rows[rc].push(item)
+            c++
+            if (c > 5) {
+                c = 0
+                rc++
+            }
+        }
+        return <div>{rows.map((row) => <Row>{row.map((item) => <Col s={2}><SoundPanel {...item}/></Col>)}</Row>)}</div>
     }
 
 }
