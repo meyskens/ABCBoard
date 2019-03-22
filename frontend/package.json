@@ -18,7 +18,7 @@
     "babel-preset-react": "^6.24.1",
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.23",
-    "react": "^16.7.0",
+    "react": "^16.8.5",
     "react-dom": "^16.7.0",
     "react-hot-keys": "^1.2.2",
     "react-materialize": "^2.6.0",
