@@ -16,7 +16,7 @@
     "babel-loader": "^8.0.4",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "moment": "^2.23.0",
+    "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
